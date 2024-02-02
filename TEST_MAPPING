@@ -1,0 +1,12 @@
+{
+    "postsubmit": [
+        {
+            "name": "CtsContactKeysProviderPrivilegedApp",
+            "options": [
+                {
+                    "include-filter": "android.provider.cts.contactkeys.privilegedapp."
+                }
+            ]
+        }
+    ]
+}
