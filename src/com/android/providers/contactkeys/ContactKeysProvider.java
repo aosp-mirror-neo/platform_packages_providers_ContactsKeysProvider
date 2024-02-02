@@ -47,6 +47,8 @@ public class ContactKeysProvider extends ContentProvider {
 
     private static final String READ_PERMISSION = "android.permission.READ_CONTACTS";
     private static final String WRITE_PERMISSION = "android.permission.WRITE_CONTACTS";
+    private static final String UPDATE_VERIFICATION_STATE_PERMISSION =
+            "android.permission.WRITE_VERIFICATION_STATE_E2EE_CONTACT_KEYS";
 
     /** Special timeUpdated value used when this data is stripped. */
     private static final long STRIPPED_TIME_UPDATED = -1;
@@ -224,10 +226,21 @@ public class ContactKeysProvider extends ContentProvider {
         final int localVerificationState =
                 extras.getInt(ContactKeys.LOCAL_VERIFICATION_STATE);
         final long timeUpdated = System.currentTimeMillis();
-        String callerPackageName = getCallingPackage();
+        final String callerPackageName = getCallingPackage();
 
-        int rowsUpdated = mDbHelper.updateContactKeyLocalVerificationState(lookupKey,
-                callerPackageName, deviceId, accountId, localVerificationState, timeUpdated);
+        int rowsUpdated;
+        if (extras.containsKey(ContactKeys.OWNER_PACKAGE_NAME)) {
+            final String ownerPackageName = extras.getString(ContactKeys.OWNER_PACKAGE_NAME);
+            ContactKeysPermissions.enforceVisibility(getContext(),
+                    callerPackageName, ownerPackageName);
+            ContactKeysPermissions.enforceCallingOrSelfPermission(getContext(),
+                    UPDATE_VERIFICATION_STATE_PERMISSION);
+            rowsUpdated = mDbHelper.updateContactKeyLocalVerificationState(lookupKey,
+                    ownerPackageName, deviceId, accountId, localVerificationState, timeUpdated);
+        } else {
+            rowsUpdated = mDbHelper.updateContactKeyLocalVerificationState(lookupKey,
+                    callerPackageName, deviceId, accountId, localVerificationState, timeUpdated);
+        }
 
         final Bundle response = new Bundle();
         response.putBoolean(ContactKeys.KEY_UPDATED_ROWS, rowsUpdated > 0);
@@ -250,11 +263,21 @@ public class ContactKeysProvider extends ContentProvider {
         final int remoteVerificationState =
                 extras.getInt(ContactKeys.REMOTE_VERIFICATION_STATE);
         final long timeUpdated = System.currentTimeMillis();
-        String callerPackageName = getCallingPackage();
+        final String callerPackageName = getCallingPackage();
 
-        int rowsUpdated = mDbHelper.updateContactKeyRemoteVerificationState(lookupKey,
-                callerPackageName, deviceId, accountId, remoteVerificationState, timeUpdated);
-
+        int rowsUpdated;
+        if (extras.containsKey(ContactKeys.OWNER_PACKAGE_NAME)) {
+            final String ownerPackageName = extras.getString(ContactKeys.OWNER_PACKAGE_NAME);
+            ContactKeysPermissions.enforceVisibility(getContext(),
+                    callerPackageName, ownerPackageName);
+            ContactKeysPermissions.enforceCallingOrSelfPermission(getContext(),
+                    UPDATE_VERIFICATION_STATE_PERMISSION);
+            rowsUpdated = mDbHelper.updateContactKeyRemoteVerificationState(lookupKey,
+                    ownerPackageName, deviceId, accountId, remoteVerificationState, timeUpdated);
+        } else {
+            rowsUpdated = mDbHelper.updateContactKeyRemoteVerificationState(lookupKey,
+                    callerPackageName, deviceId, accountId, remoteVerificationState, timeUpdated);
+        }
         final Bundle response = new Bundle();
         response.putBoolean(ContactKeys.KEY_UPDATED_ROWS, rowsUpdated > 0);
         return response;
@@ -323,10 +346,21 @@ public class ContactKeysProvider extends ContentProvider {
         final int remoteVerificationState =
                 extras.getInt(ContactKeys.REMOTE_VERIFICATION_STATE);
         final long timeUpdated = System.currentTimeMillis();
-        String callerPackageName = getCallingPackage();
+        final String callerPackageName = getCallingPackage();
 
-        int rowsUpdated = mDbHelper.updateSelfKeyRemoteVerificationState(callerPackageName,
-                deviceId, accountId, remoteVerificationState, timeUpdated);
+        int rowsUpdated;
+        if (extras.containsKey(ContactKeys.OWNER_PACKAGE_NAME)) {
+            final String ownerPackageName = extras.getString(ContactKeys.OWNER_PACKAGE_NAME);
+            ContactKeysPermissions.enforceVisibility(getContext(),
+                    callerPackageName, ownerPackageName);
+            ContactKeysPermissions.enforceCallingOrSelfPermission(getContext(),
+                    UPDATE_VERIFICATION_STATE_PERMISSION);
+            rowsUpdated = mDbHelper.updateSelfKeyRemoteVerificationState(ownerPackageName,
+                    deviceId, accountId, remoteVerificationState, timeUpdated);
+        } else {
+            rowsUpdated = mDbHelper.updateSelfKeyRemoteVerificationState(callerPackageName,
+                    deviceId, accountId, remoteVerificationState, timeUpdated);
+        }
 
         final Bundle response = new Bundle();
         response.putBoolean(ContactKeys.KEY_UPDATED_ROWS, rowsUpdated > 0);

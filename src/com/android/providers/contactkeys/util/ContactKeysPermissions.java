@@ -57,4 +57,19 @@ public class ContactKeysPermissions {
                     permission));
         }
     }
+
+    public static void enforceVisibility(Context context, String callerPackageName,
+            String targetPackageName) {
+        final PackageManager packageManager = context.getPackageManager();
+        boolean visible = false;
+        try {
+            visible = packageManager.canPackageQuery(callerPackageName, targetPackageName);
+        } catch (PackageManager.NameNotFoundException e) {
+            // visible is false
+        }
+        if (!visible) {
+            throw new SecurityException(String.format("Package %s does not have visibility into "
+                            + "package %s", callerPackageName, targetPackageName));
+        }
+    }
 }
