@@ -80,8 +80,9 @@ public class ContactKeysDatabaseHelperTest extends ProviderTestCase2<ContactKeys
                 mDbHelper.getContactKey(LOOKUP_KEY, OWNER_PACKAGE_NAME, DEVICE_ID, ACCOUNT_ID);
         ContactKeysManager.ContactKey expectedContactKey =
                 new ContactKeysManager.ContactKey(DEVICE_ID, ACCOUNT_ID, OWNER_PACKAGE_NAME,
-                        TIME_UPDATED, KEY_VALUE, ContactKeysManager.UNVERIFIED,
-                        ContactKeysManager.UNVERIFIED, DISPLAY_NAME, PHONE_NUMBER, EMAIL_ADDRESS);
+                        TIME_UPDATED, KEY_VALUE, ContactKeysManager.VERIFICATION_STATE_UNVERIFIED,
+                        ContactKeysManager.VERIFICATION_STATE_UNVERIFIED, DISPLAY_NAME,
+                        PHONE_NUMBER, EMAIL_ADDRESS);
 
         assertEquals(expectedContactKey, contactKey);
     }
@@ -93,8 +94,8 @@ public class ContactKeysDatabaseHelperTest extends ProviderTestCase2<ContactKeys
                 mDbHelper.getContactKey(LOOKUP_KEY, OWNER_PACKAGE_NAME, DEVICE_ID, ACCOUNT_ID);
         ContactKeysManager.ContactKey expectedContactKey =
                 new ContactKeysManager.ContactKey(DEVICE_ID, ACCOUNT_ID, OWNER_PACKAGE_NAME,
-                        TIME_UPDATED, KEY_VALUE, ContactKeysManager.UNVERIFIED,
-                        ContactKeysManager.UNVERIFIED, null, null, null);
+                        TIME_UPDATED, KEY_VALUE, ContactKeysManager.VERIFICATION_STATE_UNVERIFIED,
+                        ContactKeysManager.VERIFICATION_STATE_UNVERIFIED, null, null, null);
 
         assertEquals(expectedContactKey, contactKey);
     }
@@ -102,8 +103,8 @@ public class ContactKeysDatabaseHelperTest extends ProviderTestCase2<ContactKeys
     public void testUpdateContactKey() {
         mDbHelper.updateOrInsertContactKey(LOOKUP_KEY, KEY_VALUE, DEVICE_ID, ACCOUNT_ID,
                 OWNER_PACKAGE_NAME, TIME_UPDATED, DISPLAY_NAME, PHONE_NUMBER, EMAIL_ADDRESS);
-        int localVerificationState = ContactKeysManager.VERIFIED;
-        int remoteVerificationState = ContactKeysManager.VERIFIED;
+        int localVerificationState = ContactKeysManager.VERIFICATION_STATE_VERIFIED;
+        int remoteVerificationState = ContactKeysManager.VERIFICATION_STATE_VERIFIED;
         mDbHelper.updateContactKeyLocalVerificationState(LOOKUP_KEY, OWNER_PACKAGE_NAME, DEVICE_ID,
                 ACCOUNT_ID, localVerificationState, TIME_UPDATED + 1);
         mDbHelper.updateContactKeyRemoteVerificationState(LOOKUP_KEY, OWNER_PACKAGE_NAME, DEVICE_ID,
@@ -142,7 +143,7 @@ public class ContactKeysDatabaseHelperTest extends ProviderTestCase2<ContactKeys
         mDbHelper.updateOrInsertContactKey(LOOKUP_KEY, KEY_VALUE, DEVICE_ID, ACCOUNT_ID,
                 OWNER_PACKAGE_NAME, TIME_UPDATED, DISPLAY_NAME, PHONE_NUMBER, EMAIL_ADDRESS);
 
-        int updatedLvs = ContactKeysManager.VERIFIED;
+        int updatedLvs = ContactKeysManager.VERIFICATION_STATE_VERIFIED;
         mDbHelper.updateContactKeyLocalVerificationState(LOOKUP_KEY, OWNER_PACKAGE_NAME, DEVICE_ID,
                 ACCOUNT_ID, updatedLvs, TIME_UPDATED);
         ContactKeysManager.ContactKey contactKey =
@@ -150,8 +151,9 @@ public class ContactKeysDatabaseHelperTest extends ProviderTestCase2<ContactKeys
 
         ContactKeysManager.ContactKey expectedContactKey =
                 new ContactKeysManager.ContactKey(DEVICE_ID, ACCOUNT_ID, OWNER_PACKAGE_NAME,
-                        TIME_UPDATED, KEY_VALUE, updatedLvs, ContactKeysManager.UNVERIFIED,
-                        DISPLAY_NAME, PHONE_NUMBER, EMAIL_ADDRESS);
+                        TIME_UPDATED, KEY_VALUE, updatedLvs,
+                        ContactKeysManager.VERIFICATION_STATE_UNVERIFIED, DISPLAY_NAME,
+                        PHONE_NUMBER, EMAIL_ADDRESS);
 
         assertEquals(expectedContactKey, contactKey);
     }
@@ -160,7 +162,7 @@ public class ContactKeysDatabaseHelperTest extends ProviderTestCase2<ContactKeys
         mDbHelper.updateOrInsertContactKey(LOOKUP_KEY, KEY_VALUE, DEVICE_ID, ACCOUNT_ID,
                 OWNER_PACKAGE_NAME, TIME_UPDATED, DISPLAY_NAME, PHONE_NUMBER, EMAIL_ADDRESS);
 
-        int updatedRvs = ContactKeysManager.VERIFIED;
+        int updatedRvs = ContactKeysManager.VERIFICATION_STATE_VERIFIED;
         mDbHelper.updateContactKeyRemoteVerificationState(LOOKUP_KEY, OWNER_PACKAGE_NAME, DEVICE_ID,
                 ACCOUNT_ID, updatedRvs, TIME_UPDATED);
         ContactKeysManager.ContactKey contactKey =
@@ -168,8 +170,8 @@ public class ContactKeysDatabaseHelperTest extends ProviderTestCase2<ContactKeys
 
         ContactKeysManager.ContactKey expectedContactKey =
                 new ContactKeysManager.ContactKey(DEVICE_ID, ACCOUNT_ID, OWNER_PACKAGE_NAME,
-                        TIME_UPDATED, KEY_VALUE, ContactKeysManager.UNVERIFIED, updatedRvs,
-                        DISPLAY_NAME, PHONE_NUMBER, EMAIL_ADDRESS);
+                        TIME_UPDATED, KEY_VALUE, ContactKeysManager.VERIFICATION_STATE_UNVERIFIED,
+                        updatedRvs, DISPLAY_NAME, PHONE_NUMBER, EMAIL_ADDRESS);
 
         assertEquals(expectedContactKey, contactKey);
     }
@@ -188,12 +190,15 @@ public class ContactKeysDatabaseHelperTest extends ProviderTestCase2<ContactKeys
 
         ContactKeysManager.ContactKey expectedContactKey1 =
                 new ContactKeysManager.ContactKey(DEVICE_ID, ACCOUNT_ID, OWNER_PACKAGE_NAME,
-                        TIME_UPDATED, KEY_VALUE, ContactKeysManager.UNVERIFIED,
-                        ContactKeysManager.UNVERIFIED, DISPLAY_NAME, PHONE_NUMBER, EMAIL_ADDRESS);
+                        TIME_UPDATED, KEY_VALUE, ContactKeysManager.VERIFICATION_STATE_UNVERIFIED,
+                        ContactKeysManager.VERIFICATION_STATE_UNVERIFIED, DISPLAY_NAME,
+                        PHONE_NUMBER, EMAIL_ADDRESS);
         ContactKeysManager.ContactKey expectedContactKey2 =
                 new ContactKeysManager.ContactKey(DEVICE_ID_2, ACCOUNT_ID, OWNER_PACKAGE_NAME_2,
-                        TIME_UPDATED, KEY_VALUE_2, ContactKeysManager.UNVERIFIED,
-                        ContactKeysManager.UNVERIFIED, DISPLAY_NAME, null, null);
+                        TIME_UPDATED, KEY_VALUE_2,
+                        ContactKeysManager.VERIFICATION_STATE_UNVERIFIED,
+                        ContactKeysManager.VERIFICATION_STATE_UNVERIFIED, DISPLAY_NAME, null,
+                        null);
         List<ContactKeysManager.ContactKey> expectedContactKeys = ImmutableList.of(
                 expectedContactKey1, expectedContactKey2);
 
@@ -216,12 +221,15 @@ public class ContactKeysDatabaseHelperTest extends ProviderTestCase2<ContactKeys
 
         ContactKeysManager.ContactKey expectedContactKey1 =
                 new ContactKeysManager.ContactKey(DEVICE_ID, ACCOUNT_ID, OWNER_PACKAGE_NAME,
-                        TIME_UPDATED, KEY_VALUE, ContactKeysManager.UNVERIFIED,
-                        ContactKeysManager.UNVERIFIED, DISPLAY_NAME, PHONE_NUMBER, EMAIL_ADDRESS);
+                        TIME_UPDATED, KEY_VALUE, ContactKeysManager.VERIFICATION_STATE_UNVERIFIED,
+                        ContactKeysManager.VERIFICATION_STATE_UNVERIFIED, DISPLAY_NAME,
+                        PHONE_NUMBER, EMAIL_ADDRESS);
         ContactKeysManager.ContactKey expectedContactKey2 =
                 new ContactKeysManager.ContactKey(DEVICE_ID_2, ACCOUNT_ID, OWNER_PACKAGE_NAME,
-                        TIME_UPDATED, KEY_VALUE_2, ContactKeysManager.UNVERIFIED,
-                        ContactKeysManager.UNVERIFIED, DISPLAY_NAME, null, null);
+                        TIME_UPDATED, KEY_VALUE_2,
+                        ContactKeysManager.VERIFICATION_STATE_UNVERIFIED,
+                        ContactKeysManager.VERIFICATION_STATE_UNVERIFIED, DISPLAY_NAME, null,
+                        null);
         List<ContactKeysManager.ContactKey> expectedContactKeys = ImmutableList.of(
                 expectedContactKey1, expectedContactKey2);
 
@@ -236,7 +244,7 @@ public class ContactKeysDatabaseHelperTest extends ProviderTestCase2<ContactKeys
                 mDbHelper.getSelfKey(DEVICE_ID, ACCOUNT_ID, OWNER_PACKAGE_NAME);
         ContactKeysManager.SelfKey expectedSelfKey =
                 new ContactKeysManager.SelfKey(DEVICE_ID, ACCOUNT_ID, OWNER_PACKAGE_NAME,
-                        TIME_UPDATED, KEY_VALUE, ContactKeysManager.UNVERIFIED);
+                        TIME_UPDATED, KEY_VALUE, ContactKeysManager.VERIFICATION_STATE_UNVERIFIED);
 
         assertEquals(expectedSelfKey, selfKey);
     }
@@ -252,10 +260,11 @@ public class ContactKeysDatabaseHelperTest extends ProviderTestCase2<ContactKeys
 
         ContactKeysManager.SelfKey expectedSelfKey1 =
                 new ContactKeysManager.SelfKey(DEVICE_ID, ACCOUNT_ID, OWNER_PACKAGE_NAME,
-                        TIME_UPDATED, KEY_VALUE, ContactKeysManager.UNVERIFIED);
+                        TIME_UPDATED, KEY_VALUE, ContactKeysManager.VERIFICATION_STATE_UNVERIFIED);
         ContactKeysManager.SelfKey expectedSelfKey2 =
                 new ContactKeysManager.SelfKey(DEVICE_ID_2, ACCOUNT_ID_2, OWNER_PACKAGE_NAME_2,
-                        TIME_UPDATED, KEY_VALUE_2, ContactKeysManager.UNVERIFIED);
+                        TIME_UPDATED, KEY_VALUE_2,
+                        ContactKeysManager.VERIFICATION_STATE_UNVERIFIED);
         List<ContactKeysManager.SelfKey> expectedSelfKeys = ImmutableList.of(
                 expectedSelfKey1, expectedSelfKey2);
 
@@ -274,7 +283,7 @@ public class ContactKeysDatabaseHelperTest extends ProviderTestCase2<ContactKeys
 
         ContactKeysManager.SelfKey expectedSelfKey1 =
                 new ContactKeysManager.SelfKey(DEVICE_ID, ACCOUNT_ID, OWNER_PACKAGE_NAME,
-                        TIME_UPDATED, KEY_VALUE, ContactKeysManager.UNVERIFIED);
+                        TIME_UPDATED, KEY_VALUE, ContactKeysManager.VERIFICATION_STATE_UNVERIFIED);
         List<ContactKeysManager.SelfKey> expectedSelfKeys = ImmutableList.of(expectedSelfKey1);
 
         assertEquals(expectedSelfKeys.size(), selfKeys.size());
@@ -293,7 +302,7 @@ public class ContactKeysDatabaseHelperTest extends ProviderTestCase2<ContactKeys
 
         ContactKeysManager.SelfKey expectedSelfKey =
                 new ContactKeysManager.SelfKey(DEVICE_ID, ACCOUNT_ID, OWNER_PACKAGE_NAME,
-                        timeUpdated, KEY_VALUE_2, ContactKeysManager.UNVERIFIED);
+                        timeUpdated, KEY_VALUE_2, ContactKeysManager.VERIFICATION_STATE_UNVERIFIED);
 
         assertEquals(expectedSelfKey, selfKey);
     }
@@ -303,7 +312,7 @@ public class ContactKeysDatabaseHelperTest extends ProviderTestCase2<ContactKeys
                 TIME_UPDATED);
 
         long timeUpdated = TIME_UPDATED + 1;
-        int updatedRvs = ContactKeysManager.VERIFIED;
+        int updatedRvs = ContactKeysManager.VERIFICATION_STATE_VERIFIED;
         mDbHelper.updateSelfKeyRemoteVerificationState(OWNER_PACKAGE_NAME, DEVICE_ID, ACCOUNT_ID,
                 updatedRvs, timeUpdated);
         ContactKeysManager.SelfKey selfKey =
