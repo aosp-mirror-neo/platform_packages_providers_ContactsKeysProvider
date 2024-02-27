@@ -25,7 +25,7 @@
     <instrumentation
         android:name="androidx.test.runner.AndroidJUnitRunner"
         android:targetPackage="com.android.providers.contactkeys.tests"
-        android:label="ContactKeys Provider Tests">
+        android:label="E2eeContactKeys Provider Tests">
     </instrumentation>
 
 </manifest>
