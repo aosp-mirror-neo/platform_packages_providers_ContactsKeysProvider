@@ -18,17 +18,16 @@ package com.android.providers.contactkeys.util;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Binder;
 import android.os.Process;
 import android.util.Log;
 
-public class ContactKeysPermissions {
-    private static final String TAG = "ContactKeysPermissions";
+public class E2eeContactKeysPermissions {
+    private static final String TAG = "E2eeContactKeysPermissions";
 
     private static final boolean DEBUG = false; // DO NOT submit with true
 
-    private ContactKeysPermissions() {
+    private E2eeContactKeysPermissions() {
     }
 
     public static boolean hasCallerOrSelfPermission(Context context, String permission) {

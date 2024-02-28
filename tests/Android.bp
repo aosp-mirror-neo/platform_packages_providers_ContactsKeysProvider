@@ -4,7 +4,7 @@ package {
 }
 
 android_test {
-    name: "ContactKeysProviderTests",
+    name: "E2eeContactKeysProviderTests",
     static_libs: [
         "ContactsProviderTestUtils",
         "androidx.test.rules",
@@ -25,7 +25,7 @@ android_test {
     ],
     platform_apis: true,
     test_suites: ["device-tests"],
-    instrumentation_for: "ContactKeysProvider",
+    instrumentation_for: "E2eeContactKeysProvider",
     certificate: "shared",
     optimize: {
         enabled: false,
