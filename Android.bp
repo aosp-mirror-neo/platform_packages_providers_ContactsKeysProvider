@@ -4,7 +4,7 @@ package {
 }
 
 android_app {
-    name: "ContactKeysProvider",
+    name: "E2eeContactKeysProvider",
     defaults: ["platform_app_defaults"],
     // Only compile source java files in this apk.
     srcs: [
