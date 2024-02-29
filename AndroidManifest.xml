@@ -25,7 +25,7 @@
                  android:forceQueryable="true"
                  android:usesCleartextTraffic="false">
 
-        <provider android:name=".ContactKeysProvider"
+        <provider android:name=".E2eeContactKeysProvider"
                   android:authorities="com.android.contactkeys.contactkeysprovider"
                   android:syncable="false"
                   android:multiprocess="false"
