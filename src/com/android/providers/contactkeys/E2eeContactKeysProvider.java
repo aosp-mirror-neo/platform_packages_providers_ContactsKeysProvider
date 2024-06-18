@@ -183,6 +183,16 @@ public class E2eeContactKeysProvider extends ContentProvider {
                 mDbHelper.getAllContactKeys(lookupKey);
 
         contactKeys = filterVisibleContactKeys(contactKeys);
+
+        if (com.android.providers.contactkeys.flags.Flags.contactkeysStripFix()) {
+            if (E2eeContactKeysPermissions.hasCallerOrSelfPermission(getContext(),
+                    UPDATE_VERIFICATION_STATE_PERMISSION)) {
+                response.putParcelableList(E2eeContactKeys.KEY_CONTACT_KEYS, contactKeys);
+
+                return response;
+            }
+        }
+
         contactKeys = getStrippedContactKeys(contactKeys);
 
         response.putParcelableList(E2eeContactKeys.KEY_CONTACT_KEYS, contactKeys);
@@ -410,6 +420,16 @@ public class E2eeContactKeysProvider extends ContentProvider {
         List<E2eeContactKeysManager.E2eeSelfKey> selfKeys = mDbHelper.getAllSelfKeys();
 
         selfKeys = filterVisibleSelfKeys(selfKeys);
+
+        if (com.android.providers.contactkeys.flags.Flags.contactkeysStripFix()) {
+            if (E2eeContactKeysPermissions.hasCallerOrSelfPermission(getContext(),
+                    UPDATE_VERIFICATION_STATE_PERMISSION)) {
+                response.putParcelableList(E2eeContactKeys.KEY_CONTACT_KEYS, selfKeys);
+
+                return response;
+            }
+        }
+
         selfKeys = getStrippedSelfKeys(selfKeys);
 
         response.putParcelableList(E2eeContactKeys.KEY_CONTACT_KEYS, selfKeys);
