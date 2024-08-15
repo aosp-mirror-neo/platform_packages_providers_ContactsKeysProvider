@@ -1,0 +1,14 @@
+package: "com.android.providers.contactkeys.flags"
+container: "system"
+
+flag {
+    name: "contactkeys_strip_fix"
+    is_exported: true
+    namespace: "privacy_infra_policy"
+    description: "This flag controls whether E2EE contact key values are returned for apps with "
+        "WRITE_VERIFICATION_STATE_E2EE_CONTACT_KEYS"
+    bug: "344666512"
+    metadata {
+        purpose: PURPOSE_BUGFIX
+    }
+}
