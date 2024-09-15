@@ -25,6 +25,7 @@ android_app {
     optimize: {
         proguard_flags_files: ["proguard.flags"],
     },
+    static_libs: ["contactskeysprovider_flags_java_lib"],
 }
 
 filegroup {
@@ -32,4 +33,18 @@ filegroup {
     srcs: [
         "src/**/*.java",
     ],
+}
+
+aconfig_declarations {
+    name: "contactskeysprovider_flags",
+    package: "com.android.providers.contactkeys.flags",
+    container: "system",
+    srcs: [
+        "contactskeysprovider_flags.aconfig",
+    ],
+}
+
+java_aconfig_library {
+    name: "contactskeysprovider_flags_java_lib",
+    aconfig_declarations: "contactskeysprovider_flags",
 }
