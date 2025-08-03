@@ -17,16 +17,23 @@
 package com.android.providers.contactkeys;
 
 import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 import android.provider.E2eeContactKeysManager;
 import android.provider.Flags;
 import android.test.ProviderTestCase2;
 
 import com.google.common.collect.ImmutableList;
 
+import org.junit.Rule;
+
 import java.util.List;
 
 @RequiresFlagsEnabled(Flags.FLAG_USER_KEYS)
 public class E2eeContactKeysDatabaseHelperTest extends ProviderTestCase2<E2eeContactKeysProvider> {
+
+    @Rule
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
     private static final String LOOKUP_KEY = "0r1-423A2E4644502A2E50";
     private static final String LOOKUP_KEY_2 = "0r2-8T03DE4644502A2E50";
